@@ -36,7 +36,7 @@ public abstract class AbstractSendTask implements Runnable {
 		for (var time : startTime) {
 			var hourMinute = time.split(":");
 
-			if (Integer.parseInt(hourMinute[0]) == now.getHour() && Integer.parseInt(hourMinute[1]) == now.getMinute()) {
+			if (Integer.parseInt(hourMinute[0].trim()) == now.getHour() && Integer.parseInt(hourMinute[1].trim()) == now.getMinute()) {
 				delay = System.currentTimeMillis() + DateUtils.MILLIS_PER_MINUTE;
 				return true;
 			}

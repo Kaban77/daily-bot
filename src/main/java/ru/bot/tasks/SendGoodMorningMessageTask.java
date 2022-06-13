@@ -1,5 +1,7 @@
 package ru.bot.tasks;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -7,6 +9,8 @@ import ru.bot.db.DBHelper;
 import ru.bot.errors.BotErrorException;
 
 public class SendGoodMorningMessageTask extends AbstractSendTask {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SendGoodMorningMessageTask.class);
 
 	private final TelegramLongPollingBot bot;
 
@@ -26,7 +30,8 @@ public class SendGoodMorningMessageTask extends AbstractSendTask {
 				bot.execute(new SendMessage(chatId, DBHelper.INSTANCE.getString("goodMorningMessage")));
 			}
 		} catch (Exception e) {
-			BotErrorException.valueOf(e);
+			LOGGER.error("failed to process task: SendGoodMorningMessageTask", e);
+			throw BotErrorException.valueOf(e);
 		}
 	}
 }
