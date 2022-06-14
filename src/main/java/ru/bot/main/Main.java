@@ -1,7 +1,6 @@
 package ru.bot.main;
 
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import ru.bot.tasks.SendGoodMorningMessageTask;
 public class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	private static final ScheduledExecutorService SCHEDULER_EXECUTOR = Executors.newScheduledThreadPool(1);
 
 	public static void main(String[] args) {
 		try {
@@ -26,8 +24,8 @@ public class Main {
 
 			telegramBotsApi.registerBot(dailyBot);
 
-			SCHEDULER_EXECUTOR.scheduleAtFixedRate(new Send4Task(dailyBot), 30, 30, TimeUnit.SECONDS);
-			SCHEDULER_EXECUTOR.scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 30, 30, TimeUnit.SECONDS);
+			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Send4Task(dailyBot), 30, 30, TimeUnit.SECONDS);
+			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 30, 30, TimeUnit.SECONDS);
 
 			LOGGER.info("App was started");
 		} catch (Exception e) {
