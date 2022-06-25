@@ -69,6 +69,15 @@
             		<source>${java.version}</source>
             		<target>${java.version}</target>
         		</configuration>
+        		<executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>package</phase>
+                        <goals>
+                        	<goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
              </plugin>
             </plugins>
     	</pluginManagement>
