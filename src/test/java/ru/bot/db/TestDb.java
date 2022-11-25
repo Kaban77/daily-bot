@@ -13,7 +13,7 @@ public class TestDb {
 
 	@Test
 	public void testInsert() {
-		DBHelper.INSTANCE.putString("goodMorningTimes", "9:00");
+		DBHelper.INSTANCE.putString("test", "test");
 
 		var value = DBHelper.INSTANCE.getString("test");
 		Assertions.assertEquals(value, "test");
@@ -30,4 +30,5 @@ public class TestDb {
 			throw new RuntimeException(e);
 		}
 	}
+
 }

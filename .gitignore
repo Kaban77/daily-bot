@@ -8,6 +8,10 @@ sys.config
 # Compiled class file
 *.class
 
+*.png
+*.mp4
+*.txt
+
 # Log file
 *.log
 *.properties

@@ -1,5 +1,7 @@
 package ru.bot.polling;
 
+import java.util.Collection;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 	
 	private static final String BOT_USERNAME = DBHelper.INSTANCE.getString("fastMelodicBotName");
 	private static final String BOT_TOKEN = DBHelper.INSTANCE.getString("fastMelodicBotToken");
+	private static final Collection<String> ALLOWABLE_CHAT_IDS = DBHelper.INSTANCE.getCollection("allowableChatIds");
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyLongPollingBot.class);
 
@@ -24,8 +27,7 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 			return;
 		}
 
-		var allowableChatIds = DBHelper.INSTANCE.getCollection("allowableChatIds");
-		if (!allowableChatIds.contains(update.getMessage().getChatId().toString())) {
+		if (!ALLOWABLE_CHAT_IDS.contains(update.getMessage().getChatId().toString())) {
 			return;
 		}
 

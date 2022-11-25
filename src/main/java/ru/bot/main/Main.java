@@ -24,8 +24,8 @@ public class Main {
 
 			telegramBotsApi.registerBot(dailyBot);
 
-			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Send4Task(dailyBot), 30, 30, TimeUnit.SECONDS);
-			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 30, 30, TimeUnit.SECONDS);
+			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Send4Task(dailyBot), 0, 30, TimeUnit.SECONDS);
+			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 0, 30, TimeUnit.SECONDS);
 
 			LOGGER.info("App was started");
 		} catch (Exception e) {
