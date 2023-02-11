@@ -9,13 +9,13 @@
   <properties>
   	<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
   	<tg.api.version>6.1.0</tg.api.version>
-  	<java.version>18</java.version>
-  	<maven.compiler.target>18</maven.compiler.target>
-    <maven.compiler.source>18</maven.compiler.source>
-    <maven.compiler.release>18</maven.compiler.release>
+  	<java.version>19</java.version>
+  	<maven.compiler.target>19</maven.compiler.target>
+    <maven.compiler.source>19</maven.compiler.source>
+    <maven.compiler.release>19</maven.compiler.release>
     <start-class>ru.bot.main.Main</start-class>
   	<logback.version>1.4.4</logback.version>
-  	<slf4j.version>2.0.3</slf4j.version>
+  	<slf4j.version>2.0.6</slf4j.version>
   </properties>
   
   <dependencies>
@@ -109,24 +109,23 @@
 			</plugin>
 						
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-assembly-plugin</artifactId>
+			    <configuration>
+	                <archive>
+	                <manifest>
+	                    <mainClass>ru.bot.main.Main</mainClass>
+	                </manifest>
+	                </archive>
+	                <descriptorRefs>
+	                    <descriptorRef>jar-with-dependencies</descriptorRef>
+	                </descriptorRefs>
+	            </configuration>
 			    <executions>
 			        <execution>
 			            <phase>package</phase>
 			            <goals>
 			                <goal>single</goal>
 			            </goals>
-			            <configuration>
-			                <archive>
-			                <manifest>
-			                    <mainClass>ru.bot.main.Main</mainClass>
-			                </manifest>
-			                </archive>
-			                <descriptorRefs>
-			                    <descriptorRef>jar-with-dependencies</descriptorRef>
-			                </descriptorRefs>
-			            </configuration>
 			        </execution>
 			    </executions>
 			</plugin>

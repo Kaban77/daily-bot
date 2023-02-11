@@ -1,8 +1,10 @@
 package ru.bot.errors;
 
-public class BotErrorException extends RuntimeException {
+import java.io.Serial;
 
-	private static final long serialVersionUID = 1L;
+public class BotErrorException extends RuntimeException {
+	@Serial
+	private static final long serialVersionUID = 1602279301471001135L;
 
 	private final BotErrors error;
 	private transient Object[] params;

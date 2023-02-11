@@ -1,6 +1,7 @@
 package ru.bot.db;
 
 import java.util.Collection;
+import java.util.ResourceBundle;
 
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.Jedis;
@@ -15,10 +16,12 @@ public class DBHelper {
 	private final int dbPort;
 
 	private DBHelper() {
-		dbUrl = System.getenv().get("db.url");
-		dbUsername = System.getenv().get("db.user");
-		dbPassword = System.getenv().get("db.password");
-		dbPort = Integer.parseInt(System.getenv().get("db.port"));
+		var resource = ResourceBundle.getBundle("db");
+
+		dbUrl = resource.getString("db.url");
+		dbUsername = resource.getString("db.user");
+		dbPassword = resource.getString("db.password");
+		dbPort = Integer.parseInt(resource.getString("db.port"));
 	}
 
 	public void deleteValue(String key) {
