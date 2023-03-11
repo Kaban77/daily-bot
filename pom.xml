@@ -8,13 +8,13 @@
   
   <properties>
   	<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-  	<tg.api.version>6.1.0</tg.api.version>
+  	<tg.api.version>6.5.0</tg.api.version>
   	<java.version>19</java.version>
   	<maven.compiler.target>19</maven.compiler.target>
     <maven.compiler.source>19</maven.compiler.source>
     <maven.compiler.release>19</maven.compiler.release>
     <start-class>ru.bot.main.Main</start-class>
-  	<logback.version>1.4.4</logback.version>
+  	<logback.version>1.4.5</logback.version>
   	<slf4j.version>2.0.6</slf4j.version>
   </properties>
   
