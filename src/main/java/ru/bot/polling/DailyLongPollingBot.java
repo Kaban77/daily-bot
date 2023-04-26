@@ -9,17 +9,21 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import ru.bot.db.DBHelper;
+import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
 
 public class DailyLongPollingBot extends TelegramLongPollingBot {
 	
-	private static final String BOT_USERNAME = DBHelper.INSTANCE.getString("fastMelodicBotName");
-	private static final String BOT_TOKEN = DBHelper.INSTANCE.getString("fastMelodicBotToken");
-	private static final Collection<String> ALLOWABLE_CHAT_IDS = DBHelper.INSTANCE.getCollection("allowableChatIds");
+	private static final String BOT_USERNAME = RedisHelper.INSTANCE.getString("fastMelodicBotName");
+	private static final String BOT_TOKEN = RedisHelper.INSTANCE.getString("fastMelodicBotToken");
+	private static final Collection<String> ALLOWABLE_CHAT_IDS = RedisHelper.INSTANCE.getCollection("allowableChatIds");
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyLongPollingBot.class);
+
+	public DailyLongPollingBot() {
+		super(BOT_TOKEN);
+	}
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -41,7 +45,7 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 						.builder()
 						.chatId(update.getMessage().getChatId().toString())
 						.replyToMessageId(update.getMessage().getMessageId())
-						.text(DBHelper.INSTANCE.getString("noAnswer"))
+						.text(RedisHelper.INSTANCE.getString("noAnswer"))
 						.build());
 			}
 		} catch (Exception e) {
@@ -52,11 +56,6 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 	@Override
 	public String getBotUsername() {
 		return BOT_USERNAME;
-	}
-
-	@Override
-	public String getBotToken() {
-		return BOT_TOKEN;
 	}
 
 }

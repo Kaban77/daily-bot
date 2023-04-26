@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-import ru.bot.db.DBHelper;
+import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 
 public class SendGoodMorningMessageTask extends AbstractSendTask {
@@ -26,8 +26,8 @@ public class SendGoodMorningMessageTask extends AbstractSendTask {
 				return;
 			}
 
-			for (var chatId : DBHelper.INSTANCE.getCollection("allowableChatIds")) {
-				bot.execute(new SendMessage(chatId, DBHelper.INSTANCE.getString("goodMorningMessage")));
+			for (var chatId : RedisHelper.INSTANCE.getCollection("allowableChatIds")) {
+				bot.execute(new SendMessage(chatId, RedisHelper.INSTANCE.getString("goodMorningMessage")));
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to process task: SendGoodMorningMessageTask", e);

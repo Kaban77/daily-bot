@@ -6,7 +6,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 
-import ru.bot.db.DBHelper;
+import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 
 public class Send4Task extends AbstractSendTask {
@@ -27,8 +27,8 @@ public class Send4Task extends AbstractSendTask {
 				return;
 			}
 
-			for (var chatId : DBHelper.INSTANCE.getCollection("allowableChatIds")) {
-				bot.execute(new SendSticker(chatId, new InputFile(DBHelper.INSTANCE.getString("fourStickerFileId"))));
+			for (var chatId : RedisHelper.INSTANCE.getCollection("allowableChatIds")) {
+				bot.execute(new SendSticker(chatId, new InputFile(RedisHelper.INSTANCE.getString("fourStickerFileId"))));
 			}
 
 		} catch (Exception e) {
