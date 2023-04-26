@@ -4,25 +4,25 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestDb {
+public class TestRedis {
 
 	@AfterEach
 	public void deleteTestData() {
-		DBHelper.INSTANCE.deleteValue("test");
+		RedisHelper.INSTANCE.deleteValue("test");
 	}
 
 	@Test
 	public void testInsert() {
-		DBHelper.INSTANCE.putString("test", "test");
+		RedisHelper.INSTANCE.putString("test", "test");
 
-		var value = DBHelper.INSTANCE.getString("test");
+		var value = RedisHelper.INSTANCE.getString("test");
 		Assertions.assertEquals(value, "test");
 	}
 
 	@Test
 	public void testTmp() {
 		try {
-			var value = DBHelper.INSTANCE.getCollection("allowableChatIds");
+			var value = RedisHelper.INSTANCE.getCollection("allowableChatIds");
 
 			System.err.println(value);
 		} catch (Exception e) {

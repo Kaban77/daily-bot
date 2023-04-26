@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import ru.bot.db.DBHelper;
+import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
 
@@ -16,7 +16,7 @@ public abstract class AbstractSendTask implements Runnable {
 	private long delay = System.currentTimeMillis();
 
 	public AbstractSendTask(String startTimeDbKey) {
-		var startTimeString = DBHelper.INSTANCE.getString(startTimeDbKey);
+		var startTimeString = RedisHelper.INSTANCE.getString(startTimeDbKey);
 
 		if (StringUtils.isBlank(startTimeString)) {
 			throw new BotErrorException("Not found value in DB: " + startTimeDbKey, BotErrors.NO_DATA_FOUND_IN_DB)
