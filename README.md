@@ -1,4 +1,4 @@
-For create jar:
+For create jar:\n
 mvn clean compile assembly:single
 
 Save image:
