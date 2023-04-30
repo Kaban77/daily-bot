@@ -1,6 +1,9 @@
 package ru.bot.locks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyBotStartCallback.class);
 
 	private BotSession dailyBotSession;
+	private final List<ScheduledFuture<?>> scheduledFutures = new ArrayList<>();
 
 	@Override
 	public void doStart() {
@@ -28,8 +32,9 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 
 			dailyBotSession = telegramBotsApi.registerBot(dailyBot);
 
-			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Send4Task(dailyBot), 0, 30, TimeUnit.SECONDS);
-			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 0, 30, TimeUnit.SECONDS);
+			scheduledFutures.add(Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Send4Task(dailyBot), 0, 30, TimeUnit.SECONDS));
+			scheduledFutures.add(Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 0, 30,
+					TimeUnit.SECONDS));
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			throw BotErrorException.valueOf(e);
@@ -42,6 +47,9 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 		if (dailyBotSession != null) {
 			dailyBotSession.stop();
 		}
+
+		scheduledFutures.forEach(sf -> sf.cancel(false));
+		scheduledFutures.clear();
 	}
 
 }
