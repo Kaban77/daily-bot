@@ -36,6 +36,7 @@ public abstract class AbstractStartCallback {
 
 		try {
 			doStop();
+			LOGGER.info("The process stopped");
 		} catch (Exception e) {
 			LOGGER.error("Failed to stop callback", e);
 		}

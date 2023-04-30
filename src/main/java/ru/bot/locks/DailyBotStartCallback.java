@@ -30,8 +30,6 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 
 			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Send4Task(dailyBot), 0, 30, TimeUnit.SECONDS);
 			Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new SendGoodMorningMessageTask(dailyBot), 0, 30, TimeUnit.SECONDS);
-
-			LOGGER.info("App was started");
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			throw BotErrorException.valueOf(e);

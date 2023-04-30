@@ -37,5 +37,7 @@ public class BotStarter {
 				}
 			}
 		}, 0, 5 * 1000L, TimeUnit.MILLISECONDS);
+
+		LOGGER.info("App started");
 	}
 }
