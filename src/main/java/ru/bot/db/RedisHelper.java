@@ -1,11 +1,14 @@
 package ru.bot.db;
 
 import java.util.Collection;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.params.SetParams;
+import ru.bot.errors.BotErrorException;
+import ru.bot.errors.BotErrors;
 
 public class RedisHelper {
 
@@ -17,12 +20,24 @@ public class RedisHelper {
 	private final int dbPort;
 
 	private RedisHelper() {
-		var resource = ResourceBundle.getBundle("db");
+		ResourceBundle resource;
+		try {
+			resource = ResourceBundle.getBundle("db");
+		} catch (MissingResourceException e) {
+			resource = null;
+		}
 
-		dbUrl = resource.getString("db.url");
-		dbUsername = resource.getString("db.user");
-		dbPassword = resource.getString("db.password");
-		dbPort = Integer.parseInt(resource.getString("db.port"));
+		if (resource != null) {
+			dbUrl = resource.getString("db.url");
+			dbUsername = resource.getString("db.user");
+			dbPassword = resource.getString("db.password");
+			dbPort = Integer.parseInt(resource.getString("db.port"));
+		} else {
+			dbUrl = null;
+			dbUsername = null;
+			dbPassword = null;
+			dbPort = -1;
+		}
 	}
 
 	public void deleteValue(String key) {
@@ -63,6 +78,10 @@ public class RedisHelper {
 	}
 
 	private Jedis getJedis() {
+		if (dbUrl == null || dbUsername == null || dbPassword == null) {
+			throw new BotErrorException("Config file wasn't found", BotErrors.CONFIG_FILE_NOT_FOUND);
+		}
+
 		return new Jedis(dbUrl, dbPort,
 				DefaultJedisClientConfig
 				.builder()

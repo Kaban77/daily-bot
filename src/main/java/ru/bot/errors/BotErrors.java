@@ -4,6 +4,8 @@ public enum BotErrors {
 
 	FAILED_START("Ошибка при запуске приложения"),
 
+	CONFIG_FILE_NOT_FOUND("Не найден конфиг файл"),
+
 	NO_DATA_FOUND_IN_DB("Отсутствуют данные в БД. Ключ: %s"),
 
 	DEFAULT("Что-то пошло не так :(");

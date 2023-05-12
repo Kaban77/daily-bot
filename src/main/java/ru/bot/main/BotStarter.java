@@ -14,30 +14,37 @@ public class BotStarter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BotStarter.class);
 
 	public static void start(String processId, AbstractStartCallback startCallback) {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> startCallback.stop(processId, BotLock::unlock)));
+		Runtime.getRuntime()
+				.addShutdownHook(new Thread(() -> startCallback.stop(processId, BotLock::unlock), "unlock"));
 
 		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(()-> {
-			if (!startCallback.isStarted()) {
-				if (!BotLock.tryLock(processId)) {
-					return;
-				}
+			try {
+				if (!startCallback.isStarted()) {
+					if (!BotLock.tryLock(processId)) {
+						return;
+					}
 
-				LOGGER.info("Lock aquired");
+					LOGGER.info("Lock aquired");
 
-				try {
-					startCallback.start();
-				} catch (Exception e) {
-					LOGGER.error("Failed to start bot :(", e);
-					startCallback.stop(processId, BotLock::unlock);
+					try {
+						startCallback.start();
+					} catch (Exception e) {
+						LOGGER.error("Failed to start bot :(", e);
+						startCallback.stop(processId, BotLock::unlock);
+					}
+				} else {
+					if (!BotLock.isLocked(processId)) {
+						LOGGER.info("Lock lost. Bot is stopping");
+						startCallback.stop(processId, BotLock::unlock);
+					}
 				}
-			} else {
-				if (!BotLock.isLocked(processId)) {
-					LOGGER.info("Lock lost. Bot is stopping");
-					startCallback.stop(processId, BotLock::unlock);
-				}
+			} catch (Exception e) {
+				LOGGER.info("App is stoped");
+				LOGGER.error(e.getLocalizedMessage(), e);
+				Runtime.getRuntime().exit(1);
 			}
 		}, 0, 5 * 1000L, TimeUnit.MILLISECONDS);
 
-		LOGGER.info("App started");
+		LOGGER.info("App is started");
 	}
 }
