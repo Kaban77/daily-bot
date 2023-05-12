@@ -13,9 +13,9 @@ import org.telegram.telegrambots.meta.generics.BotSession;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import ru.bot.errors.BotErrorException;
-import ru.bot.polling.DailyLongPollingBot;
-import ru.bot.tasks.Send4Task;
-import ru.bot.tasks.SendGoodMorningMessageTask;
+import ru.bot.messages.polling.DailyLongPollingBot;
+import ru.bot.messages.tasks.Send4Task;
+import ru.bot.messages.tasks.SendGoodMorningMessageTask;
 
 public class DailyBotStartCallback extends AbstractStartCallback {
 

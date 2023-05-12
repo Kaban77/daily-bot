@@ -1,4 +1,4 @@
-package ru.bot.polling;
+package ru.bot.messages.polling;
 
 import java.util.Collection;
 

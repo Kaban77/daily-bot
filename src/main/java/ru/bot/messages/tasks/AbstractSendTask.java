@@ -1,4 +1,4 @@
-package ru.bot.tasks;
+package ru.bot.messages.tasks;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
