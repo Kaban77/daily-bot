@@ -2,6 +2,7 @@ package ru.bot.messages.tasks;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.TimerTask;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -10,7 +11,7 @@ import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
 
-public abstract class AbstractSendTask implements Runnable {
+public abstract class AbstractSendTask extends TimerTask {
 
 	private final String[] startTime;
 	private long delay = System.currentTimeMillis();

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
+import ru.bot.messages.answers.AnswersHandler;
 
 public class DailyLongPollingBot extends TelegramLongPollingBot {
 	
@@ -39,13 +40,13 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 
 		try {
 			var message = StringUtils.replace(update.getMessage().getText(), "@" + getBotUsername(), StringUtils.EMPTY);
-
-			if (StringUtils.equalsIgnoreCase(message, "нет")) {
+			var answer = AnswersHandler.getAnswer(message);
+			if(StringUtils.isNoneBlank(answer)) {
 				execute(SendMessage
 						.builder()
 						.chatId(update.getMessage().getChatId().toString())
 						.replyToMessageId(update.getMessage().getMessageId())
-						.text(RedisHelper.INSTANCE.getString("noAnswer"))
+						.text(answer)
 						.build());
 			}
 		} catch (Exception e) {

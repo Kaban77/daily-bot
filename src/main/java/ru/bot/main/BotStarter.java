@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.bot.errors.BotErrorException;
 import ru.bot.locks.AbstractStartCallback;
 import ru.bot.locks.BotLock;
 
@@ -38,7 +39,7 @@ public class BotStarter {
 						startCallback.stop(processId, BotLock::unlock);
 					}
 				}
-			} catch (Exception e) {
+			} catch (BotErrorException e) {
 				LOGGER.info("App is stoped");
 				LOGGER.error(e.getLocalizedMessage(), e);
 				Runtime.getRuntime().exit(1);
