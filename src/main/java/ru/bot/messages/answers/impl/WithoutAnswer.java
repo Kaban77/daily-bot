@@ -1,8 +1,9 @@
-package ru.bot.messages.answers;
+package ru.bot.messages.answers.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
 import ru.bot.db.RedisHelper;
+import ru.bot.messages.answers.IAnswerMessages;
 
 public class WithoutAnswer implements IAnswerMessages {
 
