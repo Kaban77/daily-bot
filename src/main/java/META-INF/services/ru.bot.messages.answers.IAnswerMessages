@@ -1,2 +1,3 @@
 ru.bot.messages.answers.impl.WithoutAnswer
 ru.bot.messages.answers.impl.NumberAnswer
+ru.bot.messages.answers.impl.UserAnswer

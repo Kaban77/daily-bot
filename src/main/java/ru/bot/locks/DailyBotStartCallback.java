@@ -15,6 +15,7 @@ import ru.bot.errors.BotErrorException;
 import ru.bot.messages.polling.DailyLongPollingBot;
 import ru.bot.messages.tasks.Send4Task;
 import ru.bot.messages.tasks.SendGoodMorningMessageTask;
+import ru.bot.messages.tasks.SendRandomUserMessage;
 
 public class DailyBotStartCallback extends AbstractStartCallback {
 
@@ -33,6 +34,7 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 
 			submitTask(new Send4Task(dailyBot), 30 * 1000L);
 			submitTask(new SendGoodMorningMessageTask(dailyBot), 30 * 1000L);
+			submitTask(new SendRandomUserMessage(dailyBot), 30 * 1000L);
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			throw BotErrorException.valueOf(e);

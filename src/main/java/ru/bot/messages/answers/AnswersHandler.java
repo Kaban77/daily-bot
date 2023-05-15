@@ -15,7 +15,11 @@ public class AnswersHandler {
 		ServiceLoader.load(IAnswerMessages.class).forEach(IMPLS::add);
 	}
 
-	public static String getAnswer(String message) {
+	public static String getAnswer(String message, Long userId) {
+		if (StringUtils.isBlank(message)) {
+			return null;
+		}
+
 		var filteredMessage = message
 				.replaceAll("\\(", StringUtils.EMPTY)
 				.replaceAll("\\)", StringUtils.EMPTY)
@@ -24,7 +28,7 @@ public class AnswersHandler {
 				.trim();
 
 		return IMPLS.stream()
-				.map(i -> i.findAnswer(filteredMessage))
+				.map(i -> i.findAnswer(filteredMessage, userId))
 				.filter(Objects::nonNull)
 				.findFirst()
 				.orElse(null);

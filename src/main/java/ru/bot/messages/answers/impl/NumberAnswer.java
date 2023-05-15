@@ -13,7 +13,7 @@ public class NumberAnswer implements IAnswerMessages {
 	private static final String ANSWER = RedisHelper.INSTANCE.getString("numberAnswer");
 
 	@Override
-	public String findAnswer(String message) {
+	public String findAnswer(String message, Long userId) {
 		if (MESSAGES.stream()
 				.filter(m -> StringUtils.containsIgnoreCase(message, m))
 				.findFirst()

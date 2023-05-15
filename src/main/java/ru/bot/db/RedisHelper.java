@@ -2,6 +2,7 @@ package ru.bot.db;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -90,6 +91,18 @@ public class RedisHelper {
 				map.put(Integer.toString(i + 1), value);
 				i++;
 			}
+			jedis.hset(key, map);
+		}
+	}
+
+	public Map<String, String> getMap(String key) {
+		try (var jedis = getJedis()) {
+			return jedis.hgetAll(key);
+		}
+	}
+
+	public void setMap(String key, Map<String, String> map) {
+		try (var jedis = getJedis()) {
 			jedis.hset(key, map);
 		}
 	}

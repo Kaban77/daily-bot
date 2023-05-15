@@ -11,7 +11,7 @@ public class WithoutAnswer implements IAnswerMessages {
 	private static final String ANSWER = RedisHelper.INSTANCE.getString("noAnswer");
 
 	@Override
-	public String findAnswer(String message) {
+	public String findAnswer(String message, Long userId) {
 		if (StringUtils.equalsIgnoreCase(message, MESSAGE)) {
 			return ANSWER;
 		}

@@ -6,6 +6,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 
+import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 
@@ -27,7 +28,7 @@ public class Send4Task extends AbstractSendTask {
 				return;
 			}
 
-			for (var chatId : RedisHelper.INSTANCE.getCollection("allowableChatIds")) {
+			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
 				bot.execute(new SendSticker(chatId, new InputFile(RedisHelper.INSTANCE.getString("fourStickerFileId"))));
 			}
 

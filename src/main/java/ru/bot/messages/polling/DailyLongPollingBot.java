@@ -1,7 +1,5 @@
 package ru.bot.messages.polling;
 
-import java.util.Collection;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +7,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
@@ -18,7 +17,6 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 	
 	private static final String BOT_USERNAME = RedisHelper.INSTANCE.getString("fastMelodicBotName");
 	private static final String BOT_TOKEN = RedisHelper.INSTANCE.getString("fastMelodicBotToken");
-	private static final Collection<String> ALLOWABLE_CHAT_IDS = RedisHelper.INSTANCE.getCollection("allowableChatIds");
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyLongPollingBot.class);
 
@@ -32,15 +30,19 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 			return;
 		}
 
-		if (!ALLOWABLE_CHAT_IDS.contains(update.getMessage().getChatId().toString())) {
+		if (!AllowableChatsHelper.getAllowableChats().contains(update.getMessage().getChatId().toString())) {
 			return;
 		}
 
 		LOGGER.debug("Received message: " + update);
 
+		if (!update.getMessage().getFrom().getIsBot()) {
+			AllowableChatsHelper.setChatUser(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId());
+		}
+
 		try {
 			var message = StringUtils.replace(update.getMessage().getText(), "@" + getBotUsername(), StringUtils.EMPTY);
-			var answer = AnswersHandler.getAnswer(message);
+			var answer = AnswersHandler.getAnswer(message, update.getMessage().getFrom().getId());
 			if(StringUtils.isNoneBlank(answer)) {
 				execute(SendMessage
 						.builder()
