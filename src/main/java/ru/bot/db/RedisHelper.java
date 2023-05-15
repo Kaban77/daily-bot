@@ -1,6 +1,7 @@
 package ru.bot.db;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -74,6 +75,22 @@ public class RedisHelper {
 		try (var jedis = getJedis()) {
 			var tmp = jedis.hgetAll(key);
 			return tmp.values();
+		}
+	}
+
+	public void setCollection(String key, Collection<String> values) {
+		if (values == null || values.isEmpty()) {
+			return;
+		}
+		try (var jedis = getJedis()) {
+			var map = new HashMap<String, String>();
+			
+			int i = 0;
+			for (var value : values) {
+				map.put(Integer.toString(i + 1), value);
+				i++;
+			}
+			jedis.hset(key, map);
 		}
 	}
 
