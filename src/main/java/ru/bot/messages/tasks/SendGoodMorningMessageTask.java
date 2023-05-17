@@ -1,10 +1,11 @@
-package ru.bot.tasks;
+package ru.bot.messages.tasks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 
@@ -26,7 +27,7 @@ public class SendGoodMorningMessageTask extends AbstractSendTask {
 				return;
 			}
 
-			for (var chatId : RedisHelper.INSTANCE.getCollection("allowableChatIds")) {
+			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
 				bot.execute(new SendMessage(chatId, RedisHelper.INSTANCE.getString("goodMorningMessage")));
 			}
 		} catch (Exception e) {

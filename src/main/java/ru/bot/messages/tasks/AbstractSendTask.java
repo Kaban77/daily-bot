@@ -1,7 +1,8 @@
-package ru.bot.tasks;
+package ru.bot.messages.tasks;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.TimerTask;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -10,10 +11,9 @@ import ru.bot.db.RedisHelper;
 import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
 
-public abstract class AbstractSendTask implements Runnable {
+public abstract class AbstractSendTask extends TimerTask {
 
 	private final String[] startTime;
-	private long delay = System.currentTimeMillis();
 
 	public AbstractSendTask(String startTimeDbKey) {
 		var startTimeString = RedisHelper.INSTANCE.getString(startTimeDbKey);
@@ -27,6 +27,13 @@ public abstract class AbstractSendTask implements Runnable {
 	}
 
 	protected boolean canStartNow() {
+		var delayString = RedisHelper.INSTANCE.getString(getTaskName());
+		long delay;
+		if (StringUtils.isNotBlank(delayString)) {
+			delay = Long.parseLong(delayString);
+		} else {
+			delay = System.currentTimeMillis();
+		}
 		if (delay > System.currentTimeMillis()) {
 			return false;
 		}
@@ -38,10 +45,16 @@ public abstract class AbstractSendTask implements Runnable {
 
 			if (Integer.parseInt(hourMinute[0].trim()) == now.getHour() && Integer.parseInt(hourMinute[1].trim()) == now.getMinute()) {
 				delay = System.currentTimeMillis() + DateUtils.MILLIS_PER_MINUTE;
+				RedisHelper.INSTANCE.putString(getTaskName(), Long.toString(delay));
+
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	protected String getTaskName() {
+		return getClass().getName();
 	}
 }
