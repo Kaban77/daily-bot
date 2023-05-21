@@ -11,7 +11,10 @@ public class UserAnswer implements IAnswerMessages {
 
 	@Override
 	public String findAnswer(String message, Long userId) {
-		var random = RandomGeneratorFactory.getDefault().create();
+		var random = RandomGeneratorFactory.all()
+				.findFirst()
+				.orElseThrow(() -> new RuntimeException("Random wasn't found"))
+				.create();
 		int value = random.nextInt(100);
 
 		if (value > PROBABILITY) {

@@ -37,7 +37,10 @@ public class SendRandomAudioTask extends AbstractSendTask {
 			}
 
 			var audiosList = new ArrayList<>(audios);
-			var random = RandomGeneratorFactory.getDefault().create();
+			var random =  RandomGeneratorFactory.all()
+					.findFirst()
+					.orElseThrow(() -> new RuntimeException("Random wasn't found"))
+					.create();
 			var text = RedisHelper.INSTANCE.getString("randomAudioMessage");
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {

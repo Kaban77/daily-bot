@@ -31,7 +31,10 @@ public class SendRandomUserMessage extends AbstractSendTask {
 				return;
 			}
 
-			var random = RandomGeneratorFactory.getDefault().create();
+			var random =  RandomGeneratorFactory.all()
+					.findFirst()
+					.orElseThrow(() -> new RuntimeException("Random wasn't found"))
+					.create();
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
 				var users = AllowableChatsHelper.getChatUsers(chatId);
