@@ -26,7 +26,7 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 	private final List<Timer> timers = new ArrayList<>();
 
 	@Override
-	public synchronized void doStart() {
+	public void doStart() {
 		try {
 			var telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 			var dailyBot = new DailyLongPollingBot();
@@ -45,7 +45,7 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 	}
 
 	@Override
-	public synchronized void doStop() {
+	public void doStop() {
 		if (dailyBotSession != null) {
 			dailyBotSession.stop();
 		}
