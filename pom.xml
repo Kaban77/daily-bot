@@ -7,10 +7,10 @@
   <packaging>jar</packaging>
   
   <properties>
-  	<tg.api.version>6.7.0</tg.api.version>
+  	<tg.api.version>6.8.0</tg.api.version>
   	<java.version>20</java.version>
     <start-class>ru.bot.main.Main</start-class>
-  	<logback.version>1.4.8</logback.version>
+  	<logback.version>1.4.11</logback.version>
   	<slf4j.version>2.0.7</slf4j.version>
   </properties>
   
