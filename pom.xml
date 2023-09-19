@@ -8,7 +8,7 @@
   
   <properties>
   	<tg.api.version>6.8.0</tg.api.version>
-  	<java.version>20</java.version>
+  	<java.version>21</java.version>
     <start-class>ru.bot.main.Main</start-class>
   	<logback.version>1.4.11</logback.version>
   	<slf4j.version>2.0.7</slf4j.version>
@@ -18,7 +18,7 @@
   	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
-	    <version>5.9.3</version>
+	    <version>5.10.0</version>
 	    <scope>test</scope>
     </dependency>
     <dependency>
@@ -65,7 +65,7 @@
         	<plugin>
             	<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
             		<source>${java.version}</source>
             		<target>${java.version}</target>
@@ -73,7 +73,7 @@
              </plugin>
              <plugin>
 			 	<artifactId>maven-deploy-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.1</version>
 					<executions>
 						<execution>
 							<id>deploy</id>
