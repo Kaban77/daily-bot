@@ -13,6 +13,7 @@ import ru.bot.errors.BotErrorException;
 public class Send4Task extends AbstractSendTask {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Send4Task.class);
+	private static final String STICKER_ID = RedisHelper.INSTANCE.getString("fourStickerFileId");
 
 	private final TelegramLongPollingBot bot;
 
@@ -29,7 +30,7 @@ public class Send4Task extends AbstractSendTask {
 			}
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
-				bot.execute(new SendSticker(chatId, new InputFile(RedisHelper.INSTANCE.getString("fourStickerFileId"))));
+				bot.execute(new SendSticker(chatId, new InputFile(STICKER_ID)));
 			}
 
 		} catch (Exception e) {

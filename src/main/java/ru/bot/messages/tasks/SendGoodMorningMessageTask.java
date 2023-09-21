@@ -12,6 +12,7 @@ import ru.bot.errors.BotErrorException;
 public class SendGoodMorningMessageTask extends AbstractSendTask {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendGoodMorningMessageTask.class);
+	private static final String MESSAGE = RedisHelper.INSTANCE.getString("goodMorningMessage");
 
 	private final TelegramLongPollingBot bot;
 
@@ -28,7 +29,7 @@ public class SendGoodMorningMessageTask extends AbstractSendTask {
 			}
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
-				bot.execute(new SendMessage(chatId, RedisHelper.INSTANCE.getString("goodMorningMessage")));
+				bot.execute(new SendMessage(chatId, MESSAGE));
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to process task: SendGoodMorningMessageTask", e);
