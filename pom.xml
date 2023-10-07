@@ -67,6 +67,10 @@
                 <configuration>
             		<source>${java.version}</source>
             		<target>${java.version}</target>
+            		<release>${java.version}</release>
+            		<compilerArgs>
+                        <compilerArg>-Xlint:deprecation</compilerArg>
+                    </compilerArgs>
         		</configuration>
              </plugin>
              <plugin>
