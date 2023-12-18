@@ -1,50 +1,23 @@
 package ru.bot.main;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.bot.errors.BotErrorException;
 import ru.bot.locks.AbstractStartCallback;
 import ru.bot.locks.BotLock;
+import ru.bot.locks.LockCheckerTask;
 
 public class BotStarter {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(BotStarter.class);
 
 	public static void start(String processId, AbstractStartCallback startCallback) {
 		Runtime.getRuntime()
 				.addShutdownHook(new Thread(() -> startCallback.stop(processId, BotLock::unlock), "unlock"));
 
-		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(()-> {
-			try {
-				if (!startCallback.isStarted()) {
-					if (!BotLock.tryLock(processId)) {
-						return;
-					}
-
-					LOGGER.info("Lock aquired");
-
-					try {
-						startCallback.start();
-					} catch (Exception e) {
-						LOGGER.error("Failed to start bot :(", e);
-						startCallback.stop(processId, BotLock::unlock);
-					}
-				} else {
-					if (!BotLock.isLocked(processId)) {
-						LOGGER.info("Lock lost. Bot is stopping");
-						startCallback.stop(processId, BotLock::unlock);
-					}
-				}
-			} catch (BotErrorException e) {
-				LOGGER.info("App is stoped");
-				LOGGER.error(e.getLocalizedMessage(), e);
-				Runtime.getRuntime().exit(1);
-			}
-		}, 0, 5 * 1000L, TimeUnit.MILLISECONDS);
+		var timer = new Timer("lock-checker", false);
+		timer.scheduleAtFixedRate(new LockCheckerTask(processId, startCallback), 0L, 5 * 1000L);
 
 		LOGGER.info("App is started");
 	}
