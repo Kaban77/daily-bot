@@ -49,7 +49,7 @@ public class LockCheckerTask extends TimerTask {
 			Runtime.getRuntime().exit(1);
 		} catch (Exception e) {
 			LOGGER.error("Unknown error!", e);
-			if (ERROR_COUNT.incrementAndGet() > 5) {
+			if (ERROR_COUNT.incrementAndGet() > 20) {
 				LOGGER.info("App is stoped");
 				Runtime.getRuntime().exit(1);
 			}
