@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 import ru.bot.db.RedisHelper;
 
 public class AllowableChatsHelper {
-	private static final Set<String> ALLOWABLE_CHAT_IDS = new HashSet<>(RedisHelper.INSTANCE.getCollection("allowableChatIds"));
+	private static final Set<String> ALLOWABLE_CHAT_IDS = new HashSet<>(RedisHelper.getCollection("allowableChatIds"));
 	private static final ConcurrentMap<String, List<Long>> ACTIVE_CHAT_USERS = new ConcurrentHashMap<>();
 
 	public static Set<String> getAllowableChats() {

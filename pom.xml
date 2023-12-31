@@ -10,7 +10,7 @@
   	<tg.api.version>6.8.0</tg.api.version>
   	<java.version>21</java.version>
     <start-class>ru.bot.main.Main</start-class>
-  	<logback.version>1.4.11</logback.version>
+  	<logback.version>1.4.14</logback.version>
   	<slf4j.version>2.0.9</slf4j.version>
   </properties>
   
@@ -18,9 +18,15 @@
   	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
-	    <version>5.10.0</version>
+	    <version>5.10.1</version>
 	    <scope>test</scope>
     </dependency>
+    <dependency>
+	    <groupId>org.mockito</groupId>
+	    <artifactId>mockito-core</artifactId>
+	    <version>5.5.0</version>
+	    <scope>test</scope>
+	</dependency>
     <dependency>
 	    <groupId>org.telegram</groupId>
 	    <artifactId>telegrambots</artifactId>
@@ -48,11 +54,16 @@
 	    <artifactId>commons-lang3</artifactId>
 	    <version>3.13.0</version>
 	</dependency>
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20231013</version>
+	</dependency>
 	
 	<dependency>
 	    <groupId>redis.clients</groupId>
 	    <artifactId>jedis</artifactId>
-	    <version>5.0.1</version>
+	    <version>5.1.0</version>
 	</dependency>
 
   </dependencies>
@@ -63,7 +74,7 @@
         	<plugin>
             	<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.12.0</version>
                 <configuration>
             		<source>${java.version}</source>
             		<target>${java.version}</target>

@@ -13,6 +13,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import ru.bot.errors.BotErrorException;
 import ru.bot.messages.polling.DailyLongPollingBot;
+import ru.bot.messages.tasks.ClearStatsTask;
 import ru.bot.messages.tasks.Send4Task;
 import ru.bot.messages.tasks.SendGoodMorningMessageTask;
 import ru.bot.messages.tasks.SendRandomAudioTask;
@@ -37,6 +38,7 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 			submitTask(new SendGoodMorningMessageTask(dailyBot), 30 * 1000L);
 			submitTask(new SendRandomUserMessage(dailyBot), 30 * 1000L);
 			submitTask(new SendRandomAudioTask(dailyBot), 30 * 1000L);
+			submitTask(new ClearStatsTask(), 3600000L);
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			throw BotErrorException.valueOf(e);

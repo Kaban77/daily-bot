@@ -21,7 +21,7 @@ public class UserAnswer implements IAnswerMessages {
 			return null;
 		}
 
-		var mapAnswers = RedisHelper.INSTANCE.getMap("userAnswer");
+		var mapAnswers = RedisHelper.getMap("userAnswer");
 		return mapAnswers.get(userId.toString());
 	}
 

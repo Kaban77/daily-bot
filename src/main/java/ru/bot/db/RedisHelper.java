@@ -13,15 +13,12 @@ import ru.bot.errors.BotErrorException;
 import ru.bot.errors.BotErrors;
 
 public class RedisHelper {
-
-	public static final RedisHelper INSTANCE = new RedisHelper();
+	private static final String dbUrl;
+	private static final String dbUsername;
+	private static final String dbPassword;
+	private static final int dbPort;
 	
-	private final String dbUrl;
-	private final String dbUsername;
-	private final String dbPassword;
-	private final int dbPort;
-
-	private RedisHelper() {
+	static {
 		ResourceBundle resource;
 		try {
 			resource = ResourceBundle.getBundle("db");
@@ -42,44 +39,44 @@ public class RedisHelper {
 		}
 	}
 
-	public void deleteValue(String key) {
+	public static void deleteValue(String key) {
 		try (var jedis = getJedis()) {
 			jedis.del(key);
 		}
 	}
 
-	public boolean exists(String key) {
+	public static boolean exists(String key) {
 		try (var jedis = getJedis()) {
 			return jedis.exists(key);
 		}
 	}
 
-	public String getString(String key) {
+	public static String getString(String key) {
 		try (var jedis = getJedis()) {
 			return jedis.get(key);
 		}
 	}
 	
-	public void putString(String key, String value) {
+	public static void putString(String key, String value) {
 		try (var jedis = getJedis()) {
 			jedis.set(key, value);
 		}
 	}
 	
-	public void putString(String key, String value, long millisecondsToExpire) {
+	public static void putString(String key, String value, long millisecondsToExpire) {
 		try (var jedis = getJedis()) {
 			jedis.set(key, value, SetParams.setParams().px(millisecondsToExpire));
 		}
 	}
 
-	public Collection<String> getCollection(String key) {
+	public static Collection<String> getCollection(String key) {
 		try (var jedis = getJedis()) {
 			var tmp = jedis.hgetAll(key);
 			return tmp.values();
 		}
 	}
 
-	public void setCollection(String key, Collection<String> values) {
+	public static void setCollection(String key, Collection<String> values) {
 		if (values == null || values.isEmpty()) {
 			return;
 		}
@@ -95,19 +92,19 @@ public class RedisHelper {
 		}
 	}
 
-	public Map<String, String> getMap(String key) {
+	public static Map<String, String> getMap(String key) {
 		try (var jedis = getJedis()) {
 			return jedis.hgetAll(key);
 		}
 	}
 
-	public void setMap(String key, Map<String, String> map) {
+	public static void setMap(String key, Map<String, String> map) {
 		try (var jedis = getJedis()) {
 			jedis.hset(key, map);
 		}
 	}
 
-	private Jedis getJedis() {
+	private static Jedis getJedis() {
 		if (dbUrl == null || dbUsername == null || dbPassword == null) {
 			throw new BotErrorException("Config file wasn't found", BotErrors.CONFIG_FILE_NOT_FOUND);
 		}
