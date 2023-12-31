@@ -8,21 +8,21 @@ public class TestRedis {
 
 	@AfterEach
 	public void deleteTestData() {
-		RedisHelper.INSTANCE.deleteValue("test");
+		RedisHelper.deleteValue("test");
 	}
 
 	@Test
 	public void testInsert() {
-		RedisHelper.INSTANCE.putString("test", "test");
+		RedisHelper.putString("test", "test");
 
-		var value = RedisHelper.INSTANCE.getString("test");
+		var value = RedisHelper.getString("test");
 		Assertions.assertEquals(value, "test");
 	}
 
 	@Test
 	public void testTmp() {
 		try {
-			var value = RedisHelper.INSTANCE.getCollection("allowableChatIds");
+			var value = RedisHelper.getCollection("allowableChatIds");
 
 			System.err.println(value);
 		} catch (Exception e) {

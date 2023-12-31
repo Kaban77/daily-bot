@@ -31,7 +31,7 @@ public class SendRandomAudioTask extends AbstractSendTask {
 				return;
 			}
 
-			var audios = RedisHelper.INSTANCE.getCollection("audios");
+			var audios = RedisHelper.getCollection("audios");
 			if (audios == null || audios.isEmpty()) {
 				return;
 			}
@@ -41,7 +41,7 @@ public class SendRandomAudioTask extends AbstractSendTask {
 					.findFirst()
 					.orElseThrow(() -> new RuntimeException("Random wasn't found"))
 					.create();
-			var text = RedisHelper.INSTANCE.getString("randomAudioMessage");
+			var text = RedisHelper.getString("randomAudioMessage");
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
 				var randomId = audiosList.get(random.nextInt(0, audiosList.size()));

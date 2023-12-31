@@ -15,8 +15,8 @@ import ru.bot.messages.answers.AnswersHandler;
 
 public class DailyLongPollingBot extends TelegramLongPollingBot {
 	
-	private static final String BOT_USERNAME = RedisHelper.INSTANCE.getString("fastMelodicBotName");
-	private static final String BOT_TOKEN = RedisHelper.INSTANCE.getString("fastMelodicBotToken");
+	private static final String BOT_USERNAME = RedisHelper.getString("fastMelodicBotName");
+	private static final String BOT_TOKEN = RedisHelper.getString("fastMelodicBotToken");
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyLongPollingBot.class);
 

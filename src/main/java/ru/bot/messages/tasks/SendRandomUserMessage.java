@@ -1,5 +1,6 @@
 package ru.bot.messages.tasks;
 
+import java.util.List;
 import java.util.random.RandomGeneratorFactory;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +11,12 @@ import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMem
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
+import ru.bot.messages.stats.RandomUserStats;
+import ru.bot.messages.stats.RandomUserStatsRepository;
 
 public class SendRandomUserMessage extends AbstractSendTask {
 
@@ -48,7 +53,14 @@ public class SendRandomUserMessage extends AbstractSendTask {
 				bot.execute(SendMessage
 						.builder()
 						.chatId(chatId)
-						.text(buildLink(user) + StringUtils.SPACE + RedisHelper.INSTANCE.getString("randomUserMessage"))
+						.text(buildLink(user) + StringUtils.SPACE + RedisHelper.getString("randomUserMessage"))
+						.parseMode("HTML")
+						.build());
+				
+				bot.execute(SendMessage
+						.builder()
+						.chatId(chatId)
+						.text(buildStatsMessage(user, chatId))
 						.parseMode("HTML")
 						.build());
 			}
@@ -68,4 +80,33 @@ public class SendRandomUserMessage extends AbstractSendTask {
 
 		return link.toString();
 	}
+
+	private String buildStatsMessage(ChatMember chatMember, String chatId) throws JsonProcessingException {
+		var userStats = incrementAndGetStats(chatMember, chatId);
+		if (userStats == null || userStats.isEmpty()) {
+			return null;
+		}
+
+		var message = new StringBuilder("Статистика: <br>");
+
+		for (var user : userStats) {
+			message.append("<strong>")
+				.append(user.getName())
+				.append("</strong>")
+				.append(" - ")
+				.append(user.getCount())
+				.append("<br>");
+
+		}
+
+		return message.toString();
+	}
+
+	private List<RandomUserStats> incrementAndGetStats(ChatMember chatMember, String chatId) throws JsonProcessingException {
+		var randomUserStats = RandomUserStatsRepository.getUserStats(chatMember, chatId);
+		randomUserStats.setCount(randomUserStats.getCount() + 1);
+
+		return RandomUserStatsRepository.getChatStats(chatId);
+	}
+
 }

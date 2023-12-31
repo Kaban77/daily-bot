@@ -12,7 +12,7 @@ import ru.bot.errors.BotErrorException;
 public class SendGoodMorningMessageTask extends AbstractSendTask {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendGoodMorningMessageTask.class);
-	private static final String MESSAGE = RedisHelper.INSTANCE.getString("goodMorningMessage");
+	private static final String MESSAGE = RedisHelper.getString("goodMorningMessage");
 
 	private final TelegramLongPollingBot bot;
 

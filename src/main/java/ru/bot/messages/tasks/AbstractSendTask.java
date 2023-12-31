@@ -16,7 +16,7 @@ public abstract class AbstractSendTask extends TimerTask {
 	private final String[] startTime;
 
 	public AbstractSendTask(String startTimeDbKey) {
-		var startTimeString = RedisHelper.INSTANCE.getString(startTimeDbKey);
+		var startTimeString = RedisHelper.getString(startTimeDbKey);
 
 		if (StringUtils.isBlank(startTimeString)) {
 			throw new BotErrorException("Not found value in DB: " + startTimeDbKey, BotErrors.NO_DATA_FOUND_IN_DB)
@@ -27,7 +27,7 @@ public abstract class AbstractSendTask extends TimerTask {
 	}
 
 	protected boolean canStartNow() {
-		var delayString = RedisHelper.INSTANCE.getString(getTaskName());
+		var delayString = RedisHelper.getString(getTaskName());
 		long delay;
 		if (StringUtils.isNotBlank(delayString)) {
 			delay = Long.parseLong(delayString);
@@ -45,7 +45,7 @@ public abstract class AbstractSendTask extends TimerTask {
 
 			if (Integer.parseInt(hourMinute[0].trim()) == now.getHour() && Integer.parseInt(hourMinute[1].trim()) == now.getMinute()) {
 				delay = System.currentTimeMillis() + DateUtils.MILLIS_PER_MINUTE;
-				RedisHelper.INSTANCE.putString(getTaskName(), Long.toString(delay));
+				RedisHelper.putString(getTaskName(), Long.toString(delay));
 
 				return true;
 			}
