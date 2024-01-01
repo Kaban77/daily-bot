@@ -7,10 +7,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
-import ru.bot.errors.BotErrorException;
 
 public class SendGoodMorningMessageTask extends AbstractSendTask {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendGoodMorningMessageTask.class);
 	private static final String MESSAGE = RedisHelper.getString("goodMorningMessage");
 
@@ -33,7 +31,6 @@ public class SendGoodMorningMessageTask extends AbstractSendTask {
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to process task: SendGoodMorningMessageTask", e);
-			throw BotErrorException.valueOf(e);
 		}
 	}
 }

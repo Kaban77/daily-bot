@@ -19,7 +19,6 @@ import ru.bot.messages.stats.RandomUserStats;
 import ru.bot.messages.stats.RandomUserStatsRepository;
 
 public class SendRandomUserMessage extends AbstractSendTask {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendRandomUserMessage.class);
 
 	private final TelegramLongPollingBot bot;

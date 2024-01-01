@@ -8,10 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 
 import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
-import ru.bot.errors.BotErrorException;
 
 public class Send4Task extends AbstractSendTask {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(Send4Task.class);
 	private static final String STICKER_ID = RedisHelper.getString("fourStickerFileId");
 
@@ -35,7 +33,6 @@ public class Send4Task extends AbstractSendTask {
 
 		} catch (Exception e) {
 			LOGGER.error("failed to process task: Send4Task", e);
-			throw BotErrorException.valueOf(e);
 		}
 	}
 
