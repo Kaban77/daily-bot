@@ -1,8 +1,8 @@
-For create jar:<br>
-mvn clean compile assembly:single
+#### For create jar:
+*mvn clean compile assembly:single*
 
-Save image:<br>
-docker save dailybotimage > dailybotimage.tar
+#### Save docker image:
+*docker save dailybotimage > dailybotimage.tar*
 
-Load image:<br>
-docker load --input dailybotimage.tar
+#### Load image:
+*docker load --input dailybotimage.tar*
