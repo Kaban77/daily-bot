@@ -31,17 +31,14 @@ public class RandomUserStatsRepository {
 			return fillNewRandomUserStats(user);
 		}
 
-		var jsonTree = OBJECT_MAPPER.readTree(chatStats);
-		if (jsonTree.isEmpty()) {
+		var json = new JSONObject(chatStats);
+		if (!json.has(user.getUser().getId().toString())) {
 			return fillNewRandomUserStats(user);
 		}
 
-		var node = jsonTree.get(user.getUser().getId().toString());
-		if (node == null) {
-			return fillNewRandomUserStats(user);
-		}
+		var node = json.getJSONObject(user.getUser().getId().toString());
 
-		return OBJECT_MAPPER.treeToValue(node, RandomUserStats.class);
+		return OBJECT_MAPPER.readValue(node.toString(), RandomUserStats.class);
 	}
 
 	public static void saveUserStats(RandomUserStats randomUserStats, String chatId) throws JsonProcessingException, JSONException {
@@ -52,10 +49,11 @@ public class RandomUserStatsRepository {
 
 		var chatStats = map.get(chatId);
 		var json = chatStats != null ? new JSONObject(chatStats) : new JSONObject();
-		json.put(randomUserStats.getUserId().toString(), OBJECT_MAPPER.writeValueAsString(randomUserStats));
+		json.put(randomUserStats.getUserId().toString(), new JSONObject(OBJECT_MAPPER.writeValueAsString(randomUserStats)));
 
-		map.put(chatId, json.toString());
-		RedisHelper.setMap(PROPERY_NAME, map);
+		var hashMap = new HashMap<String, String>(map);
+		hashMap.put(chatId, json.toString());
+		RedisHelper.setMap(PROPERY_NAME, hashMap);
 	}
 
 	public static List<RandomUserStats> getChatStats(String chatId) throws JsonMappingException, JsonProcessingException {
