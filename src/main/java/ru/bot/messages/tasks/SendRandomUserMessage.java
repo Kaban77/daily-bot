@@ -56,12 +56,15 @@ public class SendRandomUserMessage extends AbstractSendTask {
 						.parseMode("HTML")
 						.build());
 				
-				bot.execute(SendMessage
-						.builder()
-						.chatId(chatId)
-						.text(buildStatsMessage(user, chatId))
-						.parseMode("HTML")
-						.build());
+				var statsMessage = buildStatsMessage(user, chatId);
+				if (statsMessage != null) {
+					bot.execute(SendMessage
+							.builder()
+							.chatId(chatId)
+							.text(statsMessage)
+							.parseMode("HTML")
+							.build());
+				}
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to process task: SendRandomUserMessage", e);
@@ -86,7 +89,7 @@ public class SendRandomUserMessage extends AbstractSendTask {
 			return null;
 		}
 
-		var message = new StringBuilder("Статистика: <br>");
+		var message = new StringBuilder("Статистика:\n");
 
 		for (var user : userStats) {
 			message.append("<strong>")
@@ -94,7 +97,7 @@ public class SendRandomUserMessage extends AbstractSendTask {
 				.append("</strong>")
 				.append(" - ")
 				.append(user.getCount())
-				.append("<br>");
+				.append("\n");
 
 		}
 
@@ -104,6 +107,7 @@ public class SendRandomUserMessage extends AbstractSendTask {
 	private List<RandomUserStats> incrementAndGetStats(ChatMember chatMember, String chatId) throws JsonProcessingException {
 		var randomUserStats = RandomUserStatsRepository.getUserStats(chatMember, chatId);
 		randomUserStats.setCount(randomUserStats.getCount() + 1);
+		RandomUserStatsRepository.saveUserStats(randomUserStats, chatId);
 
 		return RandomUserStatsRepository.getChatStats(chatId);
 	}
