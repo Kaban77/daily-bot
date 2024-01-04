@@ -78,6 +78,18 @@ public class RandomUserStatsRepository {
 			result.add(OBJECT_MAPPER.treeToValue(fields.next().getValue(), RandomUserStats.class));
 		}
 
+		result.sort((u1, u2) -> {
+			if (u1.getCount() > u2.getCount()) {
+				return -1;
+			}
+
+			if (u1.getCount() < u2.getCount()) {
+				return 1;
+			}
+
+			return Long.compare(u1.getUserId(), u2.getUserId());
+		});
+
 		return result;
 	}
 

@@ -153,14 +153,14 @@ public class RandomUserStatsRepositoryTest {
 			randomUserStats.setCount(10);
 			randomUserStats.setName("name");
 
-			var json = "{\"1\": {\"userId\": 1,\"name\":\"name\", \"count\": 10}}";
+			var json = "{\"1\": {\"userId\": 1,\"name\":\"name\", \"count\": 10}, \"2\": {\"userId\": 2,\"name\":\"name2\", \"count\": 8}}";
 
 			mockRedisHelper.when(() -> RedisHelper.getMap(PROPERY_NAME)).thenReturn(Map.of("test", json));
 
 			var result = RandomUserStatsRepository.getChatStats("test");
 
 			assertNotNull(result);
-			assertEquals(1, result.size());
+			assertEquals(2, result.size());
 
 			var value = result.get(0);
 
