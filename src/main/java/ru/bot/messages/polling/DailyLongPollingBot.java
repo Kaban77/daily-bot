@@ -42,7 +42,7 @@ public class DailyLongPollingBot extends TelegramLongPollingBot {
 
 		try {
 			var message = StringUtils.replace(update.getMessage().getText(), "@" + getBotUsername(), StringUtils.EMPTY);
-			var answer = AnswersHandler.getAnswer(message, update.getMessage().getFrom().getId());
+			var answer = AnswersHandler.getAnswer(message, update.getMessage());
 			if(StringUtils.isNoneBlank(answer)) {
 				execute(SendMessage
 						.builder()
