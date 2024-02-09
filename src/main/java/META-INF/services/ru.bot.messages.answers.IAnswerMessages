@@ -2,3 +2,4 @@ ru.bot.messages.answers.impl.WithoutAnswer
 ru.bot.messages.answers.impl.NumberAnswer
 ru.bot.messages.answers.impl.UserAnswer
 ru.bot.messages.answers.impl.WelcomeAnswer
+ru.bot.messages.answers.impl.FarewellAnswer
