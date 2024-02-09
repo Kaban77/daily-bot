@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
-import org.apache.commons.lang3.StringUtils;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class AnswersHandler {
 
@@ -15,20 +15,9 @@ public class AnswersHandler {
 		ServiceLoader.load(IAnswerMessages.class).forEach(IMPLS::add);
 	}
 
-	public static String getAnswer(String message, Long userId) {
-		if (StringUtils.isBlank(message)) {
-			return null;
-		}
-
-		var filteredMessage = message
-				.replaceAll("\\(", StringUtils.EMPTY)
-				.replaceAll("\\)", StringUtils.EMPTY)
-				.replaceAll("\\.", StringUtils.EMPTY)
-				.replaceAll("\\,", StringUtils.EMPTY)
-				.trim();
-
+	public static String getAnswer(String text, Message message) {
 		return IMPLS.stream()
-				.map(i -> i.findAnswer(filteredMessage, userId))
+				.map(i -> i.findAnswer(text, message))
 				.filter(Objects::nonNull)
 				.findFirst()
 				.orElse(null);

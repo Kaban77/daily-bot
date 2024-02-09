@@ -1,7 +1,6 @@
 package ru.bot.messages.tasks;
 
 import java.util.ArrayList;
-import java.util.random.RandomGeneratorFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 
 import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
+import ru.bot.random.RandomHelper;
 
 public class SendRandomAudioTask extends AbstractSendTask {
 
@@ -37,10 +37,7 @@ public class SendRandomAudioTask extends AbstractSendTask {
 			}
 
 			var audiosList = new ArrayList<>(audios);
-			var random =  RandomGeneratorFactory.all()
-					.findFirst()
-					.orElseThrow(() -> new RuntimeException("Random wasn't found"))
-					.create();
+			var random = RandomHelper.getRandom();
 			var text = RedisHelper.getString("randomAudioMessage");
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {

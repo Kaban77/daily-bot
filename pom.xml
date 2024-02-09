@@ -7,18 +7,18 @@
   <packaging>jar</packaging>
   
   <properties>
-  	<tg.api.version>6.8.0</tg.api.version>
+  	<tg.api.version>6.9.7.0</tg.api.version>
   	<java.version>21</java.version>
     <start-class>ru.bot.main.Main</start-class>
   	<logback.version>1.4.14</logback.version>
-  	<slf4j.version>2.0.9</slf4j.version>
+  	<slf4j.version>2.0.12</slf4j.version>
   </properties>
   
   <dependencies>
   	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
-	    <version>5.10.1</version>
+	    <version>5.10.2</version>
 	    <scope>test</scope>
     </dependency>
     <dependency>
@@ -74,7 +74,7 @@
         	<plugin>
             	<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.0</version>
+                <version>3.12.1</version>
                 <configuration>
             		<source>${java.version}</source>
             		<target>${java.version}</target>
@@ -157,7 +157,7 @@
 		    </plugin>
 		    <plugin>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -170,7 +170,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.1.1</version>
+				<version>3.6.3</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
