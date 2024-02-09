@@ -1,9 +1,8 @@
 package ru.bot.messages.answers.impl;
 
-import java.util.random.RandomGeneratorFactory;
-
 import ru.bot.db.RedisHelper;
 import ru.bot.messages.answers.AnswerTextMessages;
+import ru.bot.random.RandomHelper;
 
 public class UserAnswer extends AnswerTextMessages {
 
@@ -14,10 +13,7 @@ public class UserAnswer extends AnswerTextMessages {
 	 */
 	@Override
 	public String findAnswer(String message, Long userId) {
-		var random = RandomGeneratorFactory.all()
-				.findFirst()
-				.orElseThrow(() -> new RuntimeException("Random wasn't found"))
-				.create();
+		var random = RandomHelper.getRandom();
 		int value = random.nextInt(100);
 
 		if (value > PROBABILITY) {

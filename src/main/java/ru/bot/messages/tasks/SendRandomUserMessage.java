@@ -1,7 +1,6 @@
 package ru.bot.messages.tasks;
 
 import java.util.List;
-import java.util.random.RandomGeneratorFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
 import ru.bot.messages.stats.RandomUserStats;
 import ru.bot.messages.stats.RandomUserStatsRepository;
+import ru.bot.random.RandomHelper;
 
 public class SendRandomUserMessage extends AbstractSendTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendRandomUserMessage.class);
@@ -35,10 +35,7 @@ public class SendRandomUserMessage extends AbstractSendTask {
 				return;
 			}
 
-			var random =  RandomGeneratorFactory.all()
-					.findFirst()
-					.orElseThrow(() -> new RuntimeException("Random wasn't found"))
-					.create();
+			var random = RandomHelper.getRandom();
 
 			for (var chatId : AllowableChatsHelper.getAllowableChats()) {
 				var users = AllowableChatsHelper.getChatUsers(chatId);
