@@ -15,56 +15,56 @@
   </properties>
   
   <dependencies>
-  	<dependency>
-	  <groupId>org.junit.jupiter</groupId>
-	  <artifactId>junit-jupiter-engine</artifactId>
-	  <version>5.10.2</version>
-	  <scope>test</scope>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-	  <groupId>org.mockito</groupId>
-	  <artifactId>mockito-core</artifactId>
-	  <version>5.12.0</version>
-	  <scope>test</scope>
-	</dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.12.0</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
-	  <groupId>org.telegram</groupId>
-	  <artifactId>telegrambots</artifactId>
-	  <version>${tg.api.version}</version>
-	</dependency>
+      <groupId>org.telegram</groupId>
+      <artifactId>telegrambots</artifactId>
+      <version>${tg.api.version}</version>
+    </dependency>
 
-	<dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
-	<dependency>
-	  <groupId>ch.qos.logback</groupId>
-	  <artifactId>logback-classic</artifactId>
-	  <version>${logback.version}</version>
-	</dependency>
-	<dependency>
-	  <groupId>ch.qos.logback</groupId>
-	  <artifactId>logback-core</artifactId>
-	  <version>${logback.version}</version>
-	</dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
 	
-	<dependency>
-	  <groupId>org.apache.commons</groupId>
-	  <artifactId>commons-lang3</artifactId>
-	  <version>3.13.0</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.json</groupId>
-	  <artifactId>json</artifactId>
-	  <version>20240303</version>
-	</dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.13.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20240303</version>
+    </dependency>
 	
-	<dependency>
-	  <groupId>redis.clients</groupId>
-	  <artifactId>jedis</artifactId>
-	  <version>5.1.3</version>
-	</dependency>
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>5.1.3</version>
+    </dependency>
 
   </dependencies>
   
