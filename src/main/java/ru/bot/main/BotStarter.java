@@ -17,7 +17,7 @@ public class BotStarter {
 				.addShutdownHook(new Thread(() -> startCallback.stop(processId, BotLock::unlock), "unlock"));
 
 		var timer = new Timer("lock-checker", false);
-		timer.scheduleAtFixedRate(new LockCheckerTask(processId, startCallback), 0L, 60 * 1000L);
+		timer.scheduleAtFixedRate(new LockCheckerTask(processId, startCallback), 0L, 15 * 1000L);
 
 		LOGGER.info("App is started");
 	}

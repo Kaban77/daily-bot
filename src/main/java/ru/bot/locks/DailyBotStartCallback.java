@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.generics.BotSession;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import ru.bot.errors.BotErrorException;
 import ru.bot.messages.polling.DailyLongPollingBot;
 import ru.bot.messages.tasks.ClearStatsTask;
@@ -26,6 +27,11 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 	private BotSession dailyBotSession;
 	private final List<Timer> timers = new ArrayList<>();
 
+	/**
+	 * {@inheritDoc}
+	 * @throws JedisConnectionException It can't connect to redis
+	 * @throws BotErrorException other errors
+	 */
 	@Override
 	public void doStart() {
 		try {
@@ -39,6 +45,8 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 			submitTask(new SendRandomUserMessage(dailyBot), 30 * 1000L);
 			submitTask(new SendRandomAudioTask(dailyBot), 30 * 1000L);
 			submitTask(new ClearStatsTask(), 3600000L);
+		} catch (JedisConnectionException ste) {
+			throw ste;
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			throw BotErrorException.valueOf(e);
