@@ -12,7 +12,7 @@ public enum BotErrors {
 
 	private final String errorText;
 
-	private BotErrors(String errorText) {
+	BotErrors(String errorText) {
 		this.errorText = errorText;
 	}
 

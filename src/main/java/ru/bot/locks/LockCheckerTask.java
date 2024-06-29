@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.bot.errors.BotErrorException;
+import ru.bot.errors.BotErrors;
 
 public class LockCheckerTask extends TimerTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockCheckerTask.class);
@@ -46,7 +47,12 @@ public class LockCheckerTask extends TimerTask {
 		} catch (BotErrorException e) {
 			LOGGER.info("App is stoped");
 			LOGGER.error(e.getLocalizedMessage(), e);
-			Runtime.getRuntime().exit(1);
+
+			if (e.getError() == BotErrors.CONFIG_FILE_NOT_FOUND) {
+				Runtime.getRuntime().exit(1);
+			}
+
+			ERROR_COUNT.incrementAndGet();
 		} catch (Exception e) {
 			LOGGER.error("Unknown error!", e);
 			if (ERROR_COUNT.incrementAndGet() > 40) {
@@ -54,7 +60,6 @@ public class LockCheckerTask extends TimerTask {
 				Runtime.getRuntime().exit(1);
 			}
 		}
-
 	}
 
 }
