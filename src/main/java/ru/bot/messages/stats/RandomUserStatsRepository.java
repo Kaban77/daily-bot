@@ -3,7 +3,6 @@ package ru.bot.messages.stats;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -94,7 +93,7 @@ public class RandomUserStatsRepository {
 	}
 
 	public static void clearMap() {
-		RedisHelper.setMap(PROPERY_NAME, Map.of());
+		RedisHelper.deleteValue(PROPERY_NAME);
 	}
 
 	private static RandomUserStats fillNewRandomUserStats(ChatMember user) {
