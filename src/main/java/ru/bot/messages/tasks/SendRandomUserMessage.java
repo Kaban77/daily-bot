@@ -1,6 +1,7 @@
 package ru.bot.messages.tasks;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -9,17 +10,21 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ru.bot.chats.AllowableChatsHelper;
 import ru.bot.db.RedisHelper;
+import ru.bot.errors.BotErrorException;
 import ru.bot.messages.stats.RandomUserStats;
 import ru.bot.messages.stats.RandomUserStatsRepository;
 import ru.bot.random.RandomHelper;
 
 public class SendRandomUserMessage extends AbstractSendTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendRandomUserMessage.class);
+	private static final int MAX_ATTEMPTS = 2;
+	private static final String MESSAGE = RedisHelper.getString("randomUserMessage");
 
 	private final TelegramLongPollingBot bot;
 
@@ -44,24 +49,10 @@ public class SendRandomUserMessage extends AbstractSendTask {
 				}
 
 				var userId = users.get(random.nextInt(0, users.size()));
-				var user = bot.execute(new GetChatMember(chatId, userId));
-
-				bot.execute(SendMessage
-						.builder()
-						.chatId(chatId)
-						.text(buildLink(user) + StringUtils.SPACE + RedisHelper.getString("randomUserMessage"))
-						.parseMode("HTML")
-						.build());
+				var user = sendUserMessage(userId, chatId);
 				
 				var statsMessage = buildStatsMessage(user, chatId);
-				if (statsMessage != null) {
-					bot.execute(SendMessage
-							.builder()
-							.chatId(chatId)
-							.text(statsMessage)
-							.parseMode("HTML")
-							.build());
-				}
+				sendStatsMessage(statsMessage, chatId);
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to process task: SendRandomUserMessage", e);
@@ -107,6 +98,61 @@ public class SendRandomUserMessage extends AbstractSendTask {
 		RandomUserStatsRepository.saveUserStats(randomUserStats, chatId);
 
 		return RandomUserStatsRepository.getChatStats(chatId);
+	}
+
+	private <T> T sendMessageWithRetry(Callable<T> sender) {
+		int i = 0;
+		T result;
+
+		while (true) {
+			try {
+				result = sender.call();
+				break;
+			} catch (Exception e) {
+				i++;
+				LOGGER.error("Failed to send message", e);
+				if (i >= MAX_ATTEMPTS) {
+					throw BotErrorException.valueOf(e);
+				}
+			}
+		}
+
+		return result;
+	}
+
+	private ChatMember sendUserMessage(Long userId, String chatId) {
+		return sendMessageWithRetry(() -> {
+			try {
+			var user = bot.execute(new GetChatMember(chatId, userId));
+
+			bot.execute(SendMessage
+					.builder()
+					.chatId(chatId)
+					.text(buildLink(user) + StringUtils.SPACE + MESSAGE)
+					.parseMode("HTML")
+					.build());
+
+				return user;
+			} catch (TelegramApiException e) {
+				throw BotErrorException.valueOf(e);
+			}
+		});
+	}
+
+	private void sendStatsMessage(String statsMessage, String chatId) {
+		if (statsMessage != null) {
+			sendMessageWithRetry(() -> {
+				bot.execute(SendMessage
+					.builder()
+					.chatId(chatId)
+					.text(statsMessage)
+					.parseMode("HTML")
+					.build());
+
+				return null;
+			});
+
+		}
 	}
 
 }
