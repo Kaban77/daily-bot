@@ -8,13 +8,22 @@ import ru.bot.messages.stats.RandomUserStatsRepository;
 
 public class ClearStatsTask extends TimerTask {
 
+	private final CallableWithRetry callableWithRetry;
+
+	public ClearStatsTask(CallableWithRetry callableWithRetry) {
+		this.callableWithRetry = callableWithRetry;
+	}
+
 	@Override
 	public void run() {
 		if (!canStartNow()) {
 			return;
 		}
 
-		RandomUserStatsRepository.clearMap();
+		callableWithRetry.callWithRetry(() -> {
+			RandomUserStatsRepository.clearMap();
+			return null;
+		});
 	}
 
 	private boolean canStartNow() {

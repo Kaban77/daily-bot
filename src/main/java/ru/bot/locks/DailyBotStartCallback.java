@@ -14,6 +14,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import ru.bot.errors.BotErrorException;
 import ru.bot.messages.polling.DailyLongPollingBot;
+import ru.bot.messages.tasks.CallableWithRetry;
 import ru.bot.messages.tasks.ClearStatsTask;
 import ru.bot.messages.tasks.Send4Task;
 import ru.bot.messages.tasks.SendGoodMorningMessageTask;
@@ -23,6 +24,7 @@ import ru.bot.messages.tasks.SendRandomUserMessage;
 public class DailyBotStartCallback extends AbstractStartCallback {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyBotStartCallback.class);
+	private static final int MAX_ATTEMPTS = 2;
 
 	private BotSession dailyBotSession;
 	private final List<Timer> timers = new ArrayList<>();
@@ -40,11 +42,13 @@ public class DailyBotStartCallback extends AbstractStartCallback {
 
 			dailyBotSession = telegramBotsApi.registerBot(dailyBot);
 
+			var callableWithRetry = new CallableWithRetry(MAX_ATTEMPTS);
+
 			submitTask(new Send4Task(dailyBot), 30 * 1000L);
 			submitTask(new SendGoodMorningMessageTask(dailyBot), 30 * 1000L);
-			submitTask(new SendRandomUserMessage(dailyBot), 30 * 1000L);
+			submitTask(new SendRandomUserMessage(dailyBot, callableWithRetry), 30 * 1000L);
 			submitTask(new SendRandomAudioTask(dailyBot), 30 * 1000L);
-			submitTask(new ClearStatsTask(), 3600000L);
+			submitTask(new ClearStatsTask(callableWithRetry), 3600000L);
 		} catch (JedisConnectionException ste) {
 			throw ste;
 		} catch (Exception e) {
