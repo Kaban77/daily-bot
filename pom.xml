@@ -8,10 +8,10 @@
   
   <properties>
     <tg.api.version>6.9.7.1</tg.api.version>
-    <java.version>24</java.version>
+    <java.version>25</java.version>
     <start-class>ru.bot.main.Main</start-class>
-    <logback.version>1.5.8</logback.version>
-    <slf4j.version>2.0.16</slf4j.version>
+    <logback.version>1.5.18</logback.version>
+    <slf4j.version>2.0.17</slf4j.version>
   </properties>
   
   <dependencies>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.13.0</version>
+      <version>5.20.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -57,13 +57,13 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20240303</version>
+      <version>20250517</version>
     </dependency>
 	
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>5.1.5</version>
+      <version>6.2.0</version>
     </dependency>
 
   </dependencies>
@@ -74,7 +74,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>3.14.1</version>
           <configuration>
             <source>${java.version}</source>
             <target>${java.version}</target>
